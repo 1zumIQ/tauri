@@ -19,6 +19,7 @@ Default permissions for the plugin.
 - `allow-is-maximizable`
 - `allow-is-minimizable`
 - `allow-is-closable`
+- `allow-is-focusable`
 - `allow-is-visible`
 - `allow-is-enabled`
 - `allow-title`
@@ -452,6 +453,32 @@ Enables the is_enabled command without any pre-configured scope.
 <td>
 
 Denies the is_enabled command without any pre-configured scope.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`core:window:allow-is-focusable`
+
+</td>
+<td>
+
+Enables the is_focusable command without any pre-configured scope.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`core:window:deny-is-focusable`
+
+</td>
+<td>
+
+Denies the is_focusable command without any pre-configured scope.
 
 </td>
 </tr>
@@ -1258,6 +1285,32 @@ Enables the set_focus command without any pre-configured scope.
 <td>
 
 Denies the set_focus command without any pre-configured scope.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`core:window:allow-set-focusable`
+
+</td>
+<td>
+
+Enables the set_focusable command without any pre-configured scope.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`core:window:deny-set-focusable`
+
+</td>
+<td>
+
+Denies the set_focusable command without any pre-configured scope.
 
 </td>
 </tr>

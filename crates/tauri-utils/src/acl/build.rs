@@ -380,6 +380,9 @@ pub fn generate_docs(
   let docs =
     format!("{default_permission}\n{PERMISSION_TABLE_HEADER}\n{permission_table}</table>\n");
 
+  #[cfg(windows)]
+  let docs = docs.replace('\n', "\r\n");
+
   let reference_path = out_dir.join(PERMISSION_DOCS_FILE_NAME);
   write_if_changed(&reference_path, docs).map_err(|e| Error::WriteFile(e, reference_path))?;
 

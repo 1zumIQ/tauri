@@ -1620,6 +1620,9 @@ pub struct WindowConfig {
   /// Whether the window will be initially focused or not.
   #[serde(default = "default_true")]
   pub focus: bool,
+  /// Whether the window can be focused or not.
+  #[serde(default = "default_true")]
+  pub focusable: bool,
   /// Whether the window is transparent or not.
   ///
   /// Note that on `macOS` this requires the `macos-private-api` feature flag, enabled under `tauri > macOSPrivateApi`.
@@ -1845,6 +1848,7 @@ impl Default for WindowConfig {
       title: default_title(),
       fullscreen: false,
       focus: false,
+      focusable: true,
       transparent: false,
       maximized: false,
       visible: true,
@@ -3205,6 +3209,7 @@ mod build {
       let proxy_url = opt_lit(self.proxy_url.as_ref().map(url_lit).as_ref());
       let fullscreen = self.fullscreen;
       let focus = self.focus;
+      let focusable = self.focusable;
       let transparent = self.transparent;
       let maximized = self.maximized;
       let visible = self.visible;
@@ -3262,6 +3267,7 @@ mod build {
         proxy_url,
         fullscreen,
         focus,
+        focusable,
         transparent,
         maximized,
         visible,

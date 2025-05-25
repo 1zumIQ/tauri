@@ -631,6 +631,9 @@ pub trait WindowDispatch<T: UserEvent>: Debug + Clone + Send + Sync + Sized + 's
   /// Gets the window's current focus state.
   fn is_focused(&self) -> Result<bool>;
 
+  /// Gets the window's current focusable state.
+  fn is_focusable(&self) -> Result<bool>;
+
   /// Gets the window's current decoration state.
   fn is_decorated(&self) -> Result<bool>;
 
@@ -774,6 +777,13 @@ pub trait WindowDispatch<T: UserEvent>: Debug + Clone + Send + Sync + Sized + 's
   ///   Depending on the system, this function may not have any effect when called on a window that is already visible"
   /// - **iOS / Android:** Unsupported.
   fn set_closable(&self, closable: bool) -> Result<()>;
+
+  /// Updates the window focusable state.
+  /// 
+  /// ## Platform-specific
+  /// 
+  /// - **Android / iOS / Linux / macOS:** Unsupported.
+  fn set_focusable(&self, focusable: bool) -> Result<()>;
 
   /// Updates the window title.
   fn set_title<S: Into<String>>(&self, title: S) -> Result<()>;

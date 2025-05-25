@@ -866,6 +866,7 @@ impl WindowBuilder for WindowBuilderWrapper {
         .title(config.title.to_string())
         .inner_size(config.width, config.height)
         .focused(config.focus)
+        .focusable(config.focusable)
         .visible(config.visible)
         .resizable(config.resizable)
         .fullscreen(config.fullscreen)
@@ -1028,6 +1029,11 @@ impl WindowBuilder for WindowBuilderWrapper {
 
   fn focused(mut self, focused: bool) -> Self {
     self.inner = self.inner.with_focused(focused);
+    self
+  }
+
+  fn focusable(mut self, focusable: bool) -> Self {
+    self.inner = self.inner.with_focusable(focusable);
     self
   }
 
@@ -1288,6 +1294,7 @@ pub enum WindowMessage {
   IsMinimized(Sender<bool>),
   IsMaximized(Sender<bool>),
   IsFocused(Sender<bool>),
+  IsFocusable(Sender<bool>),
   IsDecorated(Sender<bool>),
   IsResizable(Sender<bool>),
   IsMaximizable(Sender<bool>),
@@ -1327,6 +1334,7 @@ pub enum WindowMessage {
   SetMaximizable(bool),
   SetMinimizable(bool),
   SetClosable(bool),
+  SetFocusable(bool),
   SetTitle(String),
   Maximize,
   Unmaximize,
@@ -1872,6 +1880,10 @@ impl<T: UserEvent> WindowDispatch<T> for WryWindowDispatcher<T> {
     window_getter!(self, WindowMessage::IsClosable)
   }
 
+  fn is_focusable(&self) -> Result<bool> {
+    window_getter!(self, WindowMessage::IsFocusable)
+  }
+
   fn is_visible(&self) -> Result<bool> {
     window_getter!(self, WindowMessage::IsVisible)
   }
@@ -2024,6 +2036,13 @@ impl<T: UserEvent> WindowDispatch<T> for WryWindowDispatcher<T> {
     send_user_message(
       &self.context,
       Message::Window(self.window_id, WindowMessage::SetClosable(closable)),
+    )
+  }
+
+  fn set_focusable(&self, focusable: bool) -> Result<()> {
+    send_user_message(
+      &self.context,
+      Message::Window(self.window_id, WindowMessage::SetFocusable(focusable)),
     )
   }
 
@@ -3179,6 +3198,7 @@ fn handle_user_message<T: UserEvent>(
           WindowMessage::IsMinimized(tx) => tx.send(window.is_minimized()).unwrap(),
           WindowMessage::IsMaximized(tx) => tx.send(window.is_maximized()).unwrap(),
           WindowMessage::IsFocused(tx) => tx.send(window.is_focused()).unwrap(),
+          WindowMessage::IsFocusable(tx) => tx.send(window.is_focusable()).unwrap(),
           WindowMessage::IsDecorated(tx) => tx.send(window.is_decorated()).unwrap(),
           WindowMessage::IsResizable(tx) => tx.send(window.is_resizable()).unwrap(),
           WindowMessage::IsMaximizable(tx) => tx.send(window.is_maximizable()).unwrap(),
@@ -3241,6 +3261,7 @@ fn handle_user_message<T: UserEvent>(
               );
             }
           }
+          WindowMessage::SetFocusable(focusable) => window.set_focusable(focusable),
           WindowMessage::SetMaximizable(maximizable) => window.set_maximizable(maximizable),
           WindowMessage::SetMinimizable(minimizable) => window.set_minimizable(minimizable),
           WindowMessage::SetClosable(closable) => window.set_closable(closable),

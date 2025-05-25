@@ -329,6 +329,10 @@ pub trait WindowBuilder: WindowBuilderBase {
   #[must_use]
   fn focused(self, focused: bool) -> Self;
 
+  /// Whether the window can be focused or not.
+  #[must_use]
+  fn focusable(self, focusable: bool) -> Self;
+
   /// Whether the window should be maximized upon creation.
   #[must_use]
   fn maximized(self, maximized: bool) -> Self;
